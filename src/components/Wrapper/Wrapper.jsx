@@ -8,7 +8,7 @@ const Wrapper = (Component, idName, classNames) =>
         <div className="app__wrapper app__flex">
           <Component />
           <div className="copyright">
-            <p className="p-text">&#169;2020 DAMAR</p>
+            <p className="p-text">&#169;2022 DAMAR</p>
             <p className="p-text">All rights reserved</p>
           </div>
         </div>

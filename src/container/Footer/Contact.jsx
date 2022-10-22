@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 import "./Contact.scss";
 import { images } from "../../constants";
@@ -6,19 +7,13 @@ import { Wrapper, MotionWrap } from "../../components";
 import { client } from "../../services/client";
 
 const Footer = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { name, email, message } = formData;
+  const { register, handleSubmit } = useForm();
 
-  const handleChangeInput = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = () => {
-    setIsLoading(true);
+  const onSubmit = (data) => {
+    const { name, email, message } = data;
 
     const contact = {
       _type: "contact",
@@ -51,15 +46,14 @@ const Footer = () => {
         </div>
       </div>
       {!isSubmitted ? (
-        <form className="app__footer-form app__flex" onSubmit={(e) => e.preventDefault()}>
+        <form className="app__footer-form app__flex" onSubmit={handleSubmit(onSubmit)}>
           <div className="app__flex">
             <input
               className="p-text"
               type="text"
               name="name"
               placeholder="Your name"
-              value={name}
-              onChange={handleChangeInput}
+              {...register("name", { required: true })}
             />
           </div>
           <div className="app__flex">
@@ -68,8 +62,7 @@ const Footer = () => {
               type="email"
               name="email"
               placeholder="Your email"
-              value={email}
-              onChange={handleChangeInput}
+              {...register("email", { required: true })}
             />
           </div>
           <div>
@@ -77,8 +70,7 @@ const Footer = () => {
               className="p-text"
               name="message"
               placeholder="Your Message"
-              value={message}
-              onChange={handleChangeInput}
+              {...register("message", { required: true })}
             />
           </div>
           <button type="submit" className="p-text" onClick={handleSubmit}>
